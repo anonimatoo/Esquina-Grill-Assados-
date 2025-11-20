@@ -1,0 +1,359 @@
+:root {
+  --bg-main: #050101;
+  --bg-panel: rgba(10, 1, 1, 0.95);
+  --accent-red: #ff2a1f;
+  --accent-orange: #ff7a1f;
+  --accent-yellow: #ffc043;
+  --accent-amber: #ffb347;
+  --led-border: rgba(255, 90, 40, 0.85);
+  --led-glow: rgba(255, 120, 40, 0.9);
+  --text-main: #ffe6d5;
+  --text-soft: #f7cbb0;
+  --text-muted: #a57f66;
+  --shadow-deep: 0 0 50px rgba(0, 0, 0, 0.98);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* Impede scroll */
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: radial-gradient(circle at top, #260000 0, #050101 55%, #000 100%);
+  color: var(--text-main);
+}
+
+#app {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* --- INTRO --- */
+
+#intro {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 50%, #2a0500 0%, #000 80%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: opacity 0.8s ease-out, visibility 0.8s;
+}
+
+#embers-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  opacity: 0.7;
+}
+
+.intro-gradient {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, transparent 30%, #000 100%);
+  pointer-events: none;
+}
+
+.intro-content {
+  position: relative;
+  width: min(400px, 90vw); /* Levemente mais largo */
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: intro-rise 0.8s ease-out 0.2s both;
+}
+
+/* EFEITO DE FOGO NO LOGO (NOVO) */
+.fire-wrapper {
+  position: relative;
+  padding: 10px;
+  border-radius: 20px;
+}
+
+.fire-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: -15px;
+  background: radial-gradient(circle, var(--accent-orange), transparent 70%);
+  filter: blur(20px);
+  opacity: 0.6;
+  animation: fire-pulse 1.5s infinite alternate;
+  z-index: -1;
+}
+
+.intro-logo {
+  width: 100%;
+  max-width: 280px; /* Imagem maior */
+  display: block;
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.95);
+  
+  /* Animação de "respiração" do fogo e loop solicitado */
+  animation: logo-zoom-fire 3s ease-in-out infinite;
+}
+
+/* Efeitos de texto */
+.intro-text-block {
+  margin-top: 25px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  z-index: 2;
+}
+
+.intro-main-title {
+  font-weight: 900;
+  font-size: 1.6rem; /* Fonte maior */
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: center;
+  gap: 3px;
+}
+
+.led-letter {
+  color: #ffe0c2;
+  text-shadow: 0 0 5px #ffb36a, 0 0 15px rgba(255, 80, 0, 1);
+}
+
+.led-letter.accent {
+  color: #ffddaa;
+  text-shadow: 0 0 8px #ffb36a, 0 0 20px rgba(255, 40, 0, 1);
+}
+
+.intro-slogan {
+  font-size: 0.8rem;
+  color: var(--accent-yellow);
+  margin-top: 5px;
+  animation: glow-pulse 2s infinite;
+}
+
+/* --- CARTÃO DIGITAL --- */
+
+#card {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(50px) scale(0.95);
+  transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), 
+              transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  z-index: 20;
+}
+
+.card-inner {
+  width: 100%;
+  max-width: 450px; /* Ampliado para telas maiores */
+  padding: 20px;
+  border-radius: 24px;
+  background: radial-gradient(circle at top, rgba(60, 10, 0, 0.8), rgba(5, 0, 0, 0.98));
+  border: 1px solid rgba(255, 80, 20, 0.3);
+  box-shadow: 0 0 30px rgba(255, 60, 0, 0.15), inset 0 0 50px rgba(0,0,0,0.8);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Cabeçalho do Cartão */
+.card-top {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 5px;
+}
+
+.card-logo-wrap {
+  flex: 0 0 90px;
+  height: 90px;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 100, 40, 0.4);
+  box-shadow: 0 0 15px rgba(255, 60, 0, 0.5);
+}
+
+.card-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-heading {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.brand-name {
+  font-size: 1.2rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--text-main);
+  text-shadow: 0 0 10px rgba(255, 90, 20, 0.6);
+  line-height: 1.2;
+}
+
+.brand-tagline {
+  font-size: 0.75rem;
+  color: var(--accent-amber);
+  margin-top: 4px;
+}
+
+/* Divisores e Promoção */
+.divider-led {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-red), transparent);
+  box-shadow: 0 0 8px var(--accent-red);
+  opacity: 0.8;
+}
+
+.promo-strip {
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 10px;
+  background: rgba(255, 60, 0, 0.15);
+  border: 1px solid rgba(255, 80, 20, 0.3);
+  border-radius: 12px;
+  color: var(--text-soft);
+}
+
+.promo-highlight {
+  color: var(--accent-yellow);
+  font-weight: bold;
+  text-shadow: 0 0 5px var(--accent-orange);
+}
+
+/* Botões de Ação */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.action-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 12px 16px; /* Botões maiores */
+  border-radius: 16px;
+  text-decoration: none;
+  color: white;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #1a0500, #2e0a00);
+  border: 1px solid rgba(255, 100, 50, 0.3);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+  transition: transform 0.1s, box-shadow 0.2s, filter 0.2s;
+  overflow: hidden;
+}
+
+.icon-wrap {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.1);
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(255, 80, 0, 0.2);
+}
+
+.icon {
+  width: 26px;
+  height: 26px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+}
+
+.btn-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.btn-subtext {
+  font-size: 0.7rem;
+  font-weight: 400;
+  opacity: 0.8;
+  text-transform: none;
+}
+
+/* Cores Específicas dos Botões */
+.action-whatsapp {
+  border-color: rgba(37, 211, 102, 0.4);
+  box-shadow: 0 0 10px rgba(37, 211, 102, 0.1);
+}
+.action-whatsapp:active {
+  background: linear-gradient(135deg, #0a1f10, #0f2e16);
+}
+
+.action-ifood {
+  border-color: rgba(234, 29, 44, 0.4);
+  box-shadow: 0 0 10px rgba(234, 29, 44, 0.1);
+}
+
+.action-instagram {
+  border-color: rgba(225, 48, 108, 0.4);
+}
+
+/* EFEITOS DE TOQUE (TOUCH) */
+.action-btn:active {
+  transform: scale(0.96); /* Efeito de clique */
+  filter: brightness(1.2); /* Ilumina ao tocar */
+  box-shadow: 0 0 20px rgba(255, 100, 0, 0.4);
+}
+
+/* --- ESTADOS JS (Redirecionamento) --- */
+
+.app-show-card #intro {
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.1); /* Efeito de zoom out ao sair */
+}
+
+.app-show-card #card {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+/* --- ANIMAÇÕES --- */
+
+@keyframes fire-pulse {
+  0% { opacity: 0.5; transform: scale(0.95); filter: blur(15px); }
+  100% { opacity: 0.9; transform: scale(1.05); filter: blur(25px); }
+}
+
+@keyframes logo-zoom-fire {
+  0% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(255, 50, 0, 0.6)); }
+  50% { transform: scale(1.05); filter: drop-shadow(0 0 30px rgba(255, 100, 0, 0.9)); }
+  100% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(255, 50, 0, 0.6)); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { text-shadow: 0 0 5px var(--accent-yellow); }
+  50% { text-shadow: 0 0 15px var(--accent-orange), 0 0 25px var(--accent-red); }
+}
+
+@keyframes intro-rise {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
